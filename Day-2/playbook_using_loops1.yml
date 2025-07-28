@@ -1,0 +1,28 @@
+---
+- name: Ansible Playbook Using Variable
+  hosts: nonprod
+  vars:                                                               # Play argument to Specify the Variables in Playbook
+    - user_names:                                                     # Variable with List of Values
+        - emp01
+        - emp02
+    - user_pass: redhat                                               
+  tasks:
+  - name: Creating User
+    ansible.builtin.user:
+      name: "{{ item  }}"                                            # Calling the Variable using keyword item while using loops
+      password: "{{ user_pass | password_hash('sha512') }}"
+      state: present
+    loop: "{{ user_names }}"                                        # Looping the Values 
+  - name: Force password change on first login
+    ansible.builtin.command:
+      cmd: chage -d 0  "{{ item }}"
+    loop: "{{ user_names }}"
+  - name: Defining the UMASK for the user
+    ansible.builtin.shell:
+      cmd: echo 'umask 002' >> /home/{{ item }}/.bash_profile
+    loop: "{{ user_names }}"
+  - name: Configure SUDO access for the user
+    ansible.builtin.copy:
+      content: '{{ item }} ALL=(ALL) NOPASSWD: ALL'
+      dest: /etc/sudoers.d/{{ item }}
+    loop: "{{ user_names }}"

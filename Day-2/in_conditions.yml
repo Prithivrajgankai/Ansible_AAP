@@ -1,0 +1,13 @@
+- name: Install package on supported OS
+  hosts: nonprod
+  vars:
+    supported_os:
+      - Fedora
+      - CentOS
+      - RedHat
+  tasks:
+    - name: Install package only on supported OS
+      ansible.builtin.dnf:
+        name: sysstat
+        state: present
+      when: ansible_facts['distribution'] in supported_os

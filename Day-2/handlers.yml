@@ -1,0 +1,29 @@
+---
+- name: Ansible Playbook Using Handlers
+  hosts: nonprod
+  tasks:
+  - name: Install Websever
+    ansible.builtin.dnf:
+      name: httpd
+      state: present
+  - name: Configure Webserver Service
+    ansible.builtin.service:
+      name: httpd
+      state: started
+      enabled: yes
+  - name: Configure Firewall
+    ansible.posix.firewalld:
+      service: http
+      state: enabled
+      permanent: yes
+      immediate: yes
+  - name: Configure Webpage
+    ansible.builtin.copy:
+      content: "<h1> Webserver is Running..... </h1>" 
+      dest: /var/www/html/index.html
+    notify: Restart Webserver Service
+  handlers:
+  - name: Restart Webserver Service
+    ansible.builtin.service:
+      name: httpd
+      state: restarted

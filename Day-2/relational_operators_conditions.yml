@@ -1,0 +1,31 @@
+---
+- name: Ansible Playbook using Relational Operators Conditions
+  hosts: all
+  vars:
+    required_ram_size: 450
+  tasks:
+  - name: Install Software on RHELv8 and above Servers with Adquate Memory Space
+    ansible.builtin.dnf:
+      name: nginx
+      state: present
+    when:
+      - ansible_memfree_mb >= required_ram_size
+      - ansible_distribution == "RedHat"
+      - ansible_distribution_version >= '8.0'
+  - name: Install Software on RHELv7.9 and below Servers with Adquate Memory Space
+    ansible.builtin.yum:
+      name: nginx
+      state: present
+    when:
+      - ansible_memfree_mb >= required_ram_size
+      - ansible_distribution == "RedHat"
+      - ansible_distribution_version < '8.0'
+
+  - name: Install Software on Ubuntu Servers with Adquate Memory Space
+    ansible.builtin.apt:
+      name: apache-2
+      state: present
+    when:
+      - ansible_memfree_mb >= required_ram_size
+      - ansible_distribution == "Ubuntu"
+

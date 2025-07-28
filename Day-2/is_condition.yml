@@ -1,0 +1,20 @@
+---
+- name: Ansible Playbook using IS Condition
+  hosts: nonprod
+  tasks:
+  - name: Install Software Only when the Variable is Defined
+    ansible.builtin.dnf:
+      name: "{{ pack }}"
+      state: present
+    when: pack is defined
+    register: install_output
+
+  - name: Debug the Installation Success Message
+    ansible.builtin.debug:
+      msg: The Software {{ pack }} is Installed successfully.....
+    when: install_output is changed
+
+  - name: Debug the Message if the Variable is Not defined
+    ansible.builtin.debug:
+      msg: The Variable pack is UNDEFINED.....
+    when: pack is not defined

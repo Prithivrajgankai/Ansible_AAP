@@ -1,0 +1,21 @@
+---
+- name: Ansible Playbook Using Variable
+  hosts: nonprod
+  vars_files:                                                         # Play argument to Specify the Variable File in Playbook
+    - data.yml                                                        
+  tasks:
+  - name: Creating User
+    ansible.builtin.user:
+      name: "{{ user_name }}"                                         # Calling the Variable
+      password: "{{ user_pass | password_hash('sha512') }}"
+      state: present
+  - name: Force password change on first login
+    ansible.builtin.command:
+      cmd: chage -d 0  "{{ user_name }}"
+  - name: Defining the UMASK for the user
+    ansible.builtin.shell:
+      cmd: echo 'umask 002' >> /home/{{ user_name }}/.bash_profile
+  - name: Configure SUDO access for the user
+    ansible.builtin.copy:
+      content: '{{ user_name }} ALL=(ALL) NOPASSWD: ALL'
+      dest: /etc/sudoers.d/{{ user_name }}

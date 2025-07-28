@@ -1,0 +1,26 @@
+---
+- name: Ansible Playbook Using Loop
+  hosts: nonprod
+  vars:
+    usernames:
+      - Harry
+      - Natasha
+      - Sarah
+  tasks:
+  - name: Debug Value without using Loop
+    ansible.builtin.debug:
+      msg: The value of username is {{ usernames }}
+
+  - name: Debug Value using Loop
+    ansible.builtin.debug:
+      msg: The value of username is {{ item }}
+    loop: "{{ usernames }}"
+
+  - name: Debug Value using Loop 
+    ansible.builtin.debug:
+      msg: The value is {{ item }}
+    loop:
+      - Sam
+      - David
+      - Smith
+

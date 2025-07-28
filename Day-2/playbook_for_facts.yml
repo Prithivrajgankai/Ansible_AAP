@@ -1,0 +1,11 @@
+---
+- name: Ansible Playbook Using Facts
+  hosts: all
+  tasks:
+  - name: Debuging the Facts using Method-1
+    ansible.builtin.debug:
+      msg: Hello Everyone..!! This is {{ ansible_hostname }} you can access this server using {{ ansible_default_ipv4['address'] }} IP address
+
+  - name: Debuging the Facts using Method-2
+    ansible.builtin.debug:
+      msg: Hello Everyone..!! This is {{ ansible_facts['hostname'] }} you can access this server using {{ ansible_facts['default_ipv4']['address'] }} IP address

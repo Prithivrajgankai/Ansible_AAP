@@ -1,0 +1,20 @@
+---
+- name: Ansible Playbook Using Loop
+  hosts: nonprod
+  vars:
+    usernames:                                           # List of Dictionaries
+      - name: Harry
+        id: 1111
+      - name: Natasha
+        id: 2222
+      - name: Sarah
+        id: 3333
+  tasks:
+  - name: Debug Value without using Loop
+    ansible.builtin.debug:
+      msg: The value of userame is {{ usernames }}
+
+  - name: Debug Value using Loop
+    ansible.builtin.debug:
+      msg: The value of username_name is {{ item.id }}  and the value of username_id is {{ item.id }}
+    loop: "{{ usernames }}"
