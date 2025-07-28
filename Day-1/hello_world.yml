@@ -4,5 +4,5 @@
   tasks:                                          # Task Section
   - name: Tasks for My first Playbook             # Task Name
     ansible.builtin.debug:                        # Specify the Module to perform action
-    msg: "Hello World...!!!"                      # Module Argument with Value in (key:value) pairs
+      msg: "Hello World...!!!"                    # Module Argument with Value in (key:value) pairs
 ...                                               # Indicates End of YAML
