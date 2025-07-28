@@ -1,0 +1,26 @@
+---
+- name: Play-1 for Install Webserver
+  hosts: web
+  tasks:
+  - name: Install Webserver
+    ansible.builtin.dnf:
+      name: httpd
+      state: present
+  - name: Start Service
+    ansible.builtin.service:
+      name: httpd
+      state: started
+      enabled: yes
+
+- name: Play-2 for Install Database
+  hosts: db
+  tasks:
+  - name: Install Database
+    ansible.builtin.dnf:
+      name: mariadb-server
+      state: present
+  - name: Start Service
+    ansible.builtin.service:
+      name: mariadb
+      state: started
+      enabled: yes

@@ -1,0 +1,12 @@
+[prod]
+servera
+
+[nonprod]
+serverb
+
+[web]
+serverc
+
+[db]
+serverd
+
